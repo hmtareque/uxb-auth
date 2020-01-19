@@ -33,14 +33,19 @@ app.use((error, req, res, next) => {
     const data = error.data;
     res.status(status).json({ message: message, data: data });
 });
+//mongodb+srv://hmtareque:hasan076@cluster0-mhyrp.mongodb.net/uxb_directory?retryWrites=true&w=majority
 
-mongoose.connect('mongodb+srv://hmtareque:hasan076@cluster0-mhyrp.mongodb.net/uxb_directory?retryWrites=true&w=majority', { 
+mongoose.connect('mongodb+srv://uxbadmin:hasan076@cluster0-m2akr.mongodb.net/uxb_directory?retryWrites=true&w=majority', { 
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
 .then(result => {
-   // console.log('server running ...');
-    app.listen(3000);
+    console.log('server running ...');
+
+    
+
+
+    app.listen(3001);
 }).catch(err => {
     console.log(err);
 });
