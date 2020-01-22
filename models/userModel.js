@@ -37,8 +37,6 @@ userSchema.statics = {
             }
          })
    },
-
-   
 }
 
 module.exports = mongoose.model('User', userSchema);

@@ -8,6 +8,10 @@ const clientRoutes = require('./routes/clientRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 const userRoutes = require('./routes/userRoutes');
 
+
+
+
+
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
@@ -33,6 +37,9 @@ app.use((error, req, res, next) => {
     const data = error.data;
     res.status(status).json({ message: message, data: data });
 });
+
+
+
 //mongodb+srv://hmtareque:hasan076@cluster0-mhyrp.mongodb.net/uxb_directory?retryWrites=true&w=majority
 
 mongoose.connect('mongodb+srv://uxbadmin:hasan076@cluster0-m2akr.mongodb.net/uxb_directory?retryWrites=true&w=majority', { 
@@ -46,6 +53,11 @@ mongoose.connect('mongodb+srv://uxbadmin:hasan076@cluster0-m2akr.mongodb.net/uxb
 
 
     app.listen(3001);
+
+
+
+
+
 }).catch(err => {
     console.log(err);
 });
