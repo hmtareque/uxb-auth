@@ -6,10 +6,7 @@ const roleSchema = new Schema({
    client_id: { type: Schema.Types.ObjectId, ref: 'Client', required: true },
    name: { type: String, required: true },
    status: { type: String, default: 'active' },
-   permissions: [{
-      module: { type: String, required: true },
-      access: { type: Array, required: true }
-   }],
+   permissions: { type: Array, required: true },
    created_at: { type: Date, default: Date.now() },
    created_by: { type: Number },
    updated_at: { type: Date, default: null },
@@ -35,7 +32,17 @@ roleSchema.statics = {
                return Promise.reject('Role name already in use');
             }
          })
-   }
+   },
+
+//    permitted(permissions, module, action) {
+//       console.log(permitted(role.permissions, 'roles', 'update'));
+//       const data = permissions.find(item => item[module] !== undefined);
+//       if(data !== undefined) {
+//           const permitted = data[module].find(permission => permission === action);
+//           return (permitted !== undefined) ? true : false;
+//       }
+//       return false;
+//   }
 }
 
 module.exports = mongoose.model('Role', roleSchema);
