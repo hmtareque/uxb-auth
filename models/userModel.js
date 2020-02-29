@@ -29,6 +29,11 @@ userSchema.statics = {
          })
    },
    
+   /**
+    * Check email already exist or not for the user 
+    * 
+    * @param String email 
+    */
    isEmailAlreadyExist(email) {
       return this.exists({ email: email, deleted_at: null })
          .then(user => {
