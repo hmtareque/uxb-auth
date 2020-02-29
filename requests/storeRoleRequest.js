@@ -9,7 +9,6 @@ const Role = require('../models/roleModel');
  * Validate request
  */
 exports.validate = () => {
-
     return [
         body('client_id').exists().isMongoId().custom(clientId => Client.isValid(clientId)),
         body('name').exists().custom(name => Role.isNameAlreadyExist(name)),
