@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-   client: { type: Schema.Types.ObjectId, ref: 'Client', required: true },
    role: { type: Schema.Types.ObjectId, ref: 'Role', required: true },
    title: { type: String, default: null },
    first_name: { type: String, required: true },
@@ -11,8 +10,9 @@ const userSchema = new Schema({
    email: { type: String, required: true },
    password: { type: String, required: true },
    status: { type: String, default: 'active' },
+   last_logged_in_at: { type: Date, default: null },
    created_at: { type: Date, default: Date.now() },
-   created_by: { type: Number },
+   created_by: { type: Number, default: null },
    updated_at: { type: Date, default: null },
    updated_by: { type: Number, default: null },
    deleted_at: { type: Date, default: null },

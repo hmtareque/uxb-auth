@@ -36,7 +36,7 @@ app.use((error, req, res, next) => {
 
 //mongodb+srv://hmtareque:hasan076@cluster0-mhyrp.mongodb.net/uxb_directory?retryWrites=true&w=majority
 
-mongoose.connect('mongodb+srv://uxbadmin:hasan076@cluster0-m2akr.mongodb.net/uxb_directory?retryWrites=true&w=majority', { 
+mongoose.connect('mongodb://admin:hasan076@localhost:27017/auth', { 
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -46,3 +46,4 @@ mongoose.connect('mongodb+srv://uxbadmin:hasan076@cluster0-m2akr.mongodb.net/uxb
 }).catch(err => {
     console.log(err);
 });
+
