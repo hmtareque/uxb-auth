@@ -50,10 +50,13 @@ exports.storeRole = (req, res, next) => {
 
     const errors = validationResult(req);
 
+    
+
     if (errors.isEmpty()) {
 
         try {
             const newRole = storeRoleRequest.data(req);
+
             const role = new Role(newRole);
             role.save();
 

@@ -10,9 +10,9 @@ const Role = require('../models/roleModel');
  */
 exports.validate = () => {
     return [
-        body('client_id').exists().isMongoId().custom(clientId => Client.isValid(clientId)),
+      //  body('client_id').exists().isMongoId().custom(clientId => Client.isValid(clientId)),
         body('name').exists().custom(name => Role.isNameAlreadyExist(name)),
-        body('permissions').exists(),
+        body('authorizations').exists(),
     ];
 }
 
@@ -21,14 +21,13 @@ exports.validate = () => {
  */
 exports.data = (req) => {
 
-    const client_id = req.body.client_id;
+   // const client_id = req.body.client_id;
     const name = req.body.name;
-    const permissions = req.body.permissions;
+    const authorizations = req.body.authorizations;
 
     const role = {
-        client_id: client_id,
         name: name,
-        permissions: permissions,
+        authorizations: authorizations,
         created_by: 1
     };
 
