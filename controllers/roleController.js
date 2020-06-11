@@ -1,3 +1,4 @@
+const { validate } = require("../util/validation");
 const { validationResult } = require('express-validator');
 
 // Requests
@@ -48,9 +49,9 @@ exports.getRoles = (req, res, next) => {
  */
 exports.storeRole = (req, res, next) => {
 
-    const errors = validationResult(req);
-
     
+
+    const errors = validate(req);
 
     if (errors.isEmpty()) {
 
@@ -71,10 +72,9 @@ exports.storeRole = (req, res, next) => {
             });
         }
 
-
-
     } else {
-        res.status(422).json(errors);
+       // res.status(422).json({errors2});
+        res.status(422).json({ errors: errors.mapped() });
     }
 }
 
