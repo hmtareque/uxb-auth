@@ -8,6 +8,8 @@ const clientRoutes = require('./routes/clientRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 const userRoutes = require('./routes/userRoutes');
 
+
+
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
@@ -20,10 +22,7 @@ app.use((req, res, next) => {
     next();
   });
 
-// Routes
-app.use(clientRoutes);
-app.use(roleRoutes);
-app.use(userRoutes);
+
 
 // Error handling 
 app.use((error, req, res, next) => {
@@ -33,6 +32,11 @@ app.use((error, req, res, next) => {
     const data = error.data;
     res.status(status).json({ message: message, data: data });
 });
+
+// Routes
+app.use(clientRoutes);
+app.use(roleRoutes);
+app.use(userRoutes);
 
 //mongodb+srv://hmtareque:hasan076@cluster0-mhyrp.mongodb.net/uxb_directory?retryWrites=true&w=majority
 

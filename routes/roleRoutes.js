@@ -26,12 +26,12 @@ router.post('/roles', storeRoleRequest.validate(), roleController.storeRole);
 /**
  * Update a specified role
  */
-router.put('/roles/:roleId', updateRoleRequest.validate(), roleController.updateRole);
+router.put('/roles/:roleId', roleController.updateRole);
 
 
 /**
  * Delete a specifed role
  */
-router.use('/roles/:roleId', roleController.deleteRole);
+router.delete('/roles/:roleId', roleController.deleteRole);
 
 module.exports = router;

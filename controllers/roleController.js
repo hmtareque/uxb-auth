@@ -34,8 +34,7 @@ exports.getRoles = (req, res, next) => {
 
     Role.find({ deleted_at: null })
         .then(roles => {
-            
-            return res.status(200).json(roles);
+            res.status(200).json(roles);
         })
         .catch(err => {
             res.status(500).json({
