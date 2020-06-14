@@ -87,14 +87,14 @@ exports.updateRole = (req, res, next) => {
 
     if (errors.isEmpty()) {
 
-        const roleId = req.params.roleId;
+        const role_id = req.params.role_id;
         const name = req.body.name;
 
         Role.
-            findOne({ "_id": roleId, deleted_at: null }).
+            findOne({ "_id": role_id, deleted_at: null }).
             then(role => {
 
-                Role.findOne({ "_id": { $ne: roleId }, name: name, deleted_at: null })
+                Role.findOne({ "_id": { $ne: role_id }, name: name, deleted_at: null })
                     .then(result => {
                         return result;
                     })
@@ -129,6 +129,57 @@ exports.updateRole = (req, res, next) => {
                             errors: err
                         });
                     });
+            }).
+            catch(err => {
+                res.status(500).json({
+                    errors: err
+                });
+            });
+
+    } else {
+        res.status(422)
+            .json(errors);
+    }
+}
+
+
+/**
+ * Update specified role details 
+ */
+exports.ActivateRole = (req, res, next) => {
+
+    
+
+    const errors = validationResult(req);
+
+    if (errors.isEmpty()) {
+
+        const role_id = req.params.role_id;
+        const active = req.body.active;
+
+        Role.
+            findOne({ "_id": role_id, deleted_at: null }).
+            then(role => {
+
+               
+
+                try {
+                    role.active = active;
+                    role.updated_at = Date.now();
+                role.updated_by = 1;
+                role.save();
+                } catch (err) {
+                    res.status(500).json({
+                        error: err
+                    });
+                }
+
+                    res.status(200).json({
+                        message: 'Role details updated successfully.',
+                        role: active
+                    });
+
+                          
             }).
             catch(err => {
                 res.status(500).json({

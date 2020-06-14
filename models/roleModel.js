@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 
 const roleSchema = new Schema({
    name: { type: String, required: true },
-   authorizations: { type: Object, required: true },
-   status: { type: String, default: 'active' },
+   authorizations: { type: Array, required: true },
+   active: { type: Boolean, default: true },
    created_at: { type: Date, default: Date.now() },
    created_by: { type: Number },
    updated_at: { type: Date, default: null },
