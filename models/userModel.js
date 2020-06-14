@@ -8,9 +8,16 @@ const userSchema = new Schema({
    first_name: { type: String, required: true },
    last_name: { type: String, required: true },
    email: { type: String, required: true },
+   mobile: { type: String, required: true },
    password: { type: String, required: true },
    status: { type: String, default: 'active' },
-   last_logged_in_at: { type: Date, default: null },
+   last_logged_in_at: {
+      time: { type: Date, default: Date.now(), default: null },
+      location: { 
+         lat: {type: Number, default: null},
+         lng: {type: Number, default: null}
+      }
+   },
    created_at: { type: Date, default: Date.now() },
    created_by: { type: Number, default: null },
    updated_at: { type: Date, default: null },
