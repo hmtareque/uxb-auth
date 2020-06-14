@@ -1,229 +1,194 @@
 const { validate } = require("../util/validation");
-const { validationResult } = require('express-validator');
+const { validationResult } = require("express-validator");
 
 // Requests
-const storeRoleRequest = require('../requests/storeRoleRequest');
-const updateRoleRequest = require('../requests/updateRoleRequest');
+const storeRoleRequest = require("../requests/storeRoleRequest");
+const updateRoleRequest = require("../requests/updateRoleRequest");
 
 // Models
-const Role = require('../models/roleModel');
+const Role = require("../models/roleModel");
 
 /**
  * Returns specified role
  */
 exports.getRole = (req, res, next) => {
+  const roleId = req.params.roleId;
 
-    const roleId = req.params.roleId;
-
-    Role.findOne({ "_id": roleId, deleted_at: null })
-        .populate('users')
-        .then(role => {
-            return res.status(200).json(role);
-        })
-        .catch(err => {
-            res.status(500).json({
-                error: err
-            });
-        });
-}
+  Role.findOne({ _id: roleId, deleted_at: null })
+    .populate("users")
+    .then((role) => {
+      return res.status(200).json(role);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: err,
+      });
+    });
+};
 
 /**
  * Returns list of all role
  */
 exports.getRoles = (req, res, next) => {
-
-    Role.find({ deleted_at: null })
-        .then(roles => {
-            res.status(200).json(roles);
-        })
-        .catch(err => {
-            res.status(500).json({
-                error: err
-            });
-        });
-}
+  Role.find({ deleted_at: null })
+    .then((roles) => {
+      res.status(200).json(roles);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: err,
+      });
+    });
+};
 
 /**
- * Store new role in the storage 
+ * Store new role in the storage
  */
 exports.storeRole = (req, res, next) => {
+  const errors = validate(req);
 
-    
+  if (errors.isEmpty()) {
+    try {
+      const newRole = storeRoleRequest.data(req);
 
-    const errors = validate(req);
+      const role = new Role(newRole);
+      role.save();
 
-    if (errors.isEmpty()) {
-
-        try {
-            const newRole = storeRoleRequest.data(req);
-
-            const role = new Role(newRole);
-            role.save();
-
-            res.status(201).json({
-                message: 'Role created successfully.',
-                role: role
-            });
-
-        } catch (err) {
-            res.status(500).json({
-                error: err
-            });
-        }
-
-    } else {
-       // res.status(422).json({errors2});
-        res.status(422).json({ errors: errors.mapped() });
+      res.status(201).json({
+        message: "Role created successfully.",
+        role: role,
+      });
+    } catch (err) {
+      res.status(500).json({
+        error: err,
+      });
     }
-}
-
+  } else {
+    // res.status(422).json({errors2});
+    res.status(422).json({ errors: errors.mapped() });
+  }
+};
 
 /**
- * Update specified role details 
+ * Update specified role details
  */
 exports.updateRole = (req, res, next) => {
+  const errors = validationResult(req);
 
-    const errors = validationResult(req);
+  if (errors.isEmpty()) {
+    const role_id = req.params.role_id;
+    const name = req.body.name;
 
-    if (errors.isEmpty()) {
+    Role.findOne({ _id: role_id, deleted_at: null })
+      .then((role) => {
+        Role.findOne({ _id: { $ne: role_id }, name: name, deleted_at: null })
+          .then((result) => {
+            return result;
+          })
+          .then((result) => {
+            if (result) {
+              res.status(422).json({
+                errors: {
+                  msg: "Name already in use",
+                  param: "name",
+                  location: "body",
+                },
+              });
+            } else {
+              try {
+                const updatedRole = updateRoleRequest.data(role, req);
+                updatedRole.save();
 
-        const role_id = req.params.role_id;
-        const name = req.body.name;
-
-        Role.
-            findOne({ "_id": role_id, deleted_at: null }).
-            then(role => {
-
-                Role.findOne({ "_id": { $ne: role_id }, name: name, deleted_at: null })
-                    .then(result => {
-                        return result;
-                    })
-                    .then(result => {
-                        if (result) {
-                            res.status(422).json({
-                                errors: {
-                                    msg: "Name already in use",
-                                    param: "name",
-                                    location: "body"
-                                }
-                            });
-                        } else {
-                            try {
-                                const updatedRole = updateRoleRequest.data(role, req);
-                                updatedRole.save();
-
-                                res.status(200).json({
-                                    message: 'Role details updated successfully.',
-                                    role: updatedRole
-                                });
-
-                            } catch (err) {
-                                res.status(500).json({
-                                    errors: err
-                                });
-                            }
-                        }
-                    })
-                    .catch(err => {
-                        res.status(500).json({
-                            errors: err
-                        });
-                    });
-            }).
-            catch(err => {
-                res.status(500).json({
-                    errors: err
+                res.status(200).json({
+                  message: "Role details updated successfully.",
+                  role: updatedRole,
                 });
+              } catch (err) {
+                res.status(500).json({
+                  errors: err,
+                });
+              }
+            }
+          })
+          .catch((err) => {
+            res.status(500).json({
+              errors: err,
             });
-
-    } else {
-        res.status(422)
-            .json(errors);
-    }
-}
-
+          });
+      })
+      .catch((err) => {
+        res.status(500).json({
+          errors: err,
+        });
+      });
+  } else {
+    res.status(422).json(errors);
+  }
+};
 
 /**
- * Update specified role details 
+ * Update specified role details
  */
 exports.ActivateRole = (req, res, next) => {
+  const errors = validationResult(req);
 
-    
+  if (errors.isEmpty()) {
+    const role_id = req.params.role_id;
+    const active = req.body.active;
 
-    const errors = validationResult(req);
+    Role.findOne({ _id: role_id, deleted_at: null })
+      .then((role) => {
+        try {
+          role.active = active;
+          role.updated_at = Date.now();
+          role.updated_by = 1;
+          role.save();
+        } catch (err) {
+          res.status(500).json({
+            error: err,
+          });
+        }
 
-    if (errors.isEmpty()) {
-
-        const role_id = req.params.role_id;
-        const active = req.body.active;
-
-        Role.
-            findOne({ "_id": role_id, deleted_at: null }).
-            then(role => {
-
-               
-
-                try {
-                    role.active = active;
-                    role.updated_at = Date.now();
-                role.updated_by = 1;
-                role.save();
-                } catch (err) {
-                    res.status(500).json({
-                        error: err
-                    });
-                }
-
-                    res.status(200).json({
-                        message: 'Role details updated successfully.',
-                        role: active
-                    });
-
-                          
-            }).
-            catch(err => {
-                res.status(500).json({
-                    errors: err
-                });
-            });
-
-    } else {
-        res.status(422)
-            .json(errors);
-    }
-}
+        res.status(200).json({
+          message: "Role details updated successfully.",
+          role: active,
+        });
+      })
+      .catch((err) => {
+        res.status(500).json({
+          errors: err,
+        });
+      });
+  } else {
+    res.status(422).json(errors);
+  }
+};
 
 /**
- * Delete specified role in the storage 
+ * Delete specified role in the storage
  */
 exports.deleteRole = (req, res, next) => {
+  const roleId = req.params.roleId;
 
-    const roleId = req.params.roleId;
-
-    Role.findOne({ "_id": roleId, deleted_at: null })
-        .then(role => {
-
-            try {
-                role.deleted_at = Date.now();
-                role.deleted_by = 1;
-                role.save();
-            } catch (err) {
-                res.status(404).json({
-                    error: err
-                });
-            }
-
-            res.status(200).json({
-                message: 'Role deleted successfully.'
-            });
-        })
-        .catch(err => {
-            res.status(404).json({
-                error: 'Role not found'
-            });
+  Role.findOne({ _id: roleId, deleted_at: null })
+    .then((role) => {
+      try {
+        role.deleted_at = Date.now();
+        role.deleted_by = 1;
+        role.save();
+      } catch (err) {
+        res.status(404).json({
+          error: err,
         });
-}
+      }
 
-
-
-
+      res.status(200).json({
+        message: "Role deleted successfully.",
+      });
+    })
+    .catch((err) => {
+      res.status(404).json({
+        error: "Role not found",
+      });
+    });
+};
