@@ -6,6 +6,12 @@ const roleSchema = new Schema({
    name: { type: String, required: true },
    authorizations: { type: Array, required: true },
    active: { type: Boolean, default: true },
+   users: [
+      {
+         type: Schema.Types.ObjectId,
+         ref: 'User'
+       }
+   ],
    created_at: { type: Date, default: Date.now() },
    created_by: { type: Number },
    updated_at: { type: Date, default: null },
@@ -15,8 +21,8 @@ const roleSchema = new Schema({
 });
 
 roleSchema.statics = {
-   isValid(id) {
-      return this.findById(id)
+   isValid(role_id) {
+      return this.findById(role_id)
          .then(role => {
             if (!role) {
                return Promise.reject('Role not found');

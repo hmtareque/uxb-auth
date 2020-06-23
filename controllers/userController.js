@@ -57,11 +57,27 @@ exports.storeUser = (req, res, next) => {
             const newUser = storeUserRequest.data(req);
             const user = new User(newUser);
 
-            Client.findById(user.client)
-            .then(client => {
+            console.log('test');
 
-                client.users.push(user.id);
-                client.save();
+            user.validate(function(error){
+                if(error) {
+                    console.log(error)
+                } else {
+                    console.log('no error')
+                }
+               
+            });
+
+            
+
+            
+
+            Role.findById(user.role_id)
+            .then(role => {
+
+              //  role.users.push(user.id);
+              //  role.save();
+
                 user.save();
 
                 res.status(201).json({
@@ -71,13 +87,13 @@ exports.storeUser = (req, res, next) => {
             })
             .catch(err => {
                 res.status(500).json({
-                    error: 'failed'
+                    error: 'User role not found.'
                 });
             })
 
         } catch (err) {
             res.status(500).json({
-                error: 'failed 3'
+                error: 'Failed to save the user. Please try again.'
             });
         }
 
