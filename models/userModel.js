@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-   role: { type: Schema.Types.ObjectId, ref: 'Role', required: true },
+   role_id: { type: Schema.Types.ObjectId, ref: 'Role', required: true },
    title: { type: String, default: null },
    first_name: { type: String, required: true },
    last_name: { type: String, required: true },
