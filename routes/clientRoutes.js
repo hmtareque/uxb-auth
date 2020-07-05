@@ -11,7 +11,6 @@ const updateClientRequest = require('../requests/updateClientRequest');
  * Supply a specified client
  */
 router.get('/clients/:clientId', clientController.getClient);
-
 /**
  * Supply the list of all clients
  */

@@ -1,8 +1,7 @@
 const { body } = require('express-validator');
 
 // Models
-const Client = require('../models/clientModel');
-const Role = require('../models/roleModel');
+const Role = require('../../models/role');
 
 
 /**
@@ -10,9 +9,8 @@ const Role = require('../models/roleModel');
  */
 exports.validate = () => {
     return [
-      //  body('client_id').exists().isMongoId().custom(clientId => Client.isValid(clientId)),
         body('name').exists().custom(name => Role.isNameAlreadyExist(name)),
-        body('authorizations').exists(),
+        body('authorizations').isArray().exists(),
     ];
 }
 

@@ -5,9 +5,9 @@ const storeUserRequest = require('../requests/storeUserRequest');
 const updateUserRequest = require('../requests/updateUserRequest');
 
 // Models
-const User = require('../models/userModel');
+const User = require('../models/user');
 const Client = require('../models/clientModel');
-const Role = require('../models/roleModel');
+const Role = require('../models/role');
 
 /**
  * Returns specified user
@@ -55,13 +55,14 @@ exports.storeUser = (req, res, next) => {
 
         try {
             const newUser = storeUserRequest.data(req);
-            const user = new User(newUser);
+            const user = new User();
 
             console.log('test');
 
-            user.validate(function(error){
+            user.save(function(error){
                 if(error) {
-                    console.log(error)
+                   // console.log(error)
+                    res.status(422).json(error);
                 } else {
                     console.log('no error')
                 }

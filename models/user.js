@@ -10,10 +10,10 @@ const userSchema = new Schema({
    email: { type: String, required: true },
    mobile: { type: String,  require: true }, //default: null
    password: { type: String, required: true },
-   status: { type: String, default: 'active' },
+   status: { type: String, require: true },
    test: {type: Number, require: true},
    last_logged_in_at: {
-      time: { type: Date, default: Date.now(), default: null },
+      time: { type: Date, default: null },
       location: { 
          lat: {type: Number, default: null},
          lng: {type: Number, default: null}

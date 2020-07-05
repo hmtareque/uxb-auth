@@ -1,7 +1,7 @@
 const { body, check} = require('express-validator');
 
 // User model
-const User = require('../models/userModel');
+const User = require('../models/user');
 
 /**
  * Validate request 
@@ -9,9 +9,9 @@ const User = require('../models/userModel');
 exports.validate = () => {
 
     return [ 
-        check('userId').exists().isMongoId().custom(userId => User.isValid(userId)),
-        body('client').exists().isMongoId().custom(clientId => Client.isValid(clientId)),
-        body('role').exists().isMongoId().custom(roleId => Role.isValid(roleId)),
+     //   check('userId').exists().isMongoId().custom(userId => User.isValid(userId)),
+     //   body('client').exists().isMongoId().custom(clientId => Client.isValid(clientId)),
+      //  body('role').exists().isMongoId().custom(roleId => Role.isValid(roleId)),
         body('title').optional(),
         body('first_name').exists(),
         body('last_name').exists(),

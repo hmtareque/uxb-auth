@@ -4,11 +4,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 
-const clientRoutes = require('./routes/clientRoutes');
-const roleRoutes = require('./routes/roleRoutes');
-const userRoutes = require('./routes/userRoutes');
-
-
+const routes = require('./routes/role-routes');
 
 app.use(bodyParser.json());
 
@@ -34,9 +30,9 @@ app.use((error, req, res, next) => {
 });
 
 // Routes
-app.use(clientRoutes);
-app.use(roleRoutes);
-app.use(userRoutes);
+app.use(routes);
+//app.use(roleRoutes);
+//app.use(userRoutes);
 
 //mongodb+srv://hmtareque:hasan076@cluster0-mhyrp.mongodb.net/uxb_directory?retryWrites=true&w=majority
 

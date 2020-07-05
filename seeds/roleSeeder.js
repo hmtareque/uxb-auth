@@ -1,4 +1,4 @@
-const Role = require('../models/roleModel');
+const Role = require('../models/role');
 
 const roleSeeder = () => {
 

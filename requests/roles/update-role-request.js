@@ -1,8 +1,5 @@
 const { body, check} = require('express-validator');
 
-// Client model
-const Client = require('../models/clientModel');
-
 /**
  * Validate request 
  */

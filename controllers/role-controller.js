@@ -1,12 +1,8 @@
 const { validate } = require("../util/validation");
 const { validationResult } = require("express-validator");
 
-// Requests
-const storeRoleRequest = require("../requests/storeRoleRequest");
-const updateRoleRequest = require("../requests/updateRoleRequest");
-
 // Models
-const Role = require("../models/roleModel");
+const Role = require("../models/role");
 
 /**
  * Returns specified role
@@ -49,10 +45,21 @@ exports.storeRole = (req, res, next) => {
 
   if (errors.isEmpty()) {
     try {
-      const newRole = storeRoleRequest.data(req);
+      const roleData = {
+        name: req.body.name,
+        authorizations: req.body.authorizations,
+        created_by: 1,
+      };
 
-      const role = new Role(newRole);
-      role.save();
+      const role = new Role(roleData);
+
+      role.save(function (error) {
+        if (error) {
+          res
+            .status(500)
+            .json({ error: "Trying to save invalid role object." });
+        }
+      });
 
       res.status(201).json({
         message: "Role created successfully.",
@@ -64,7 +71,6 @@ exports.storeRole = (req, res, next) => {
       });
     }
   } else {
-    // res.status(422).json({errors2});
     res.status(422).json({ errors: errors.mapped() });
   }
 };
