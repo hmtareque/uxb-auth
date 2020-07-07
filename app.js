@@ -4,6 +4,28 @@ const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 
+const swaggerJsDocs = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
+// https://swagger.io/specification/
+const swaggerOptions = {
+    swaggerDefinition: {
+        info: {
+            title: 'API name',
+            description: 'description',
+            contact: {
+                name: 'Hasan Tareque',
+                email: 'hmtareque@gmail.com'
+            }
+        },
+        servers: ['http://localhost:3001']
+    },
+    apis: ["app.js"]
+}
+
+const swaggerDocs = swaggerJsDocs(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
 const routes = require('./routes/role-routes');
 
 app.use(bodyParser.json());
